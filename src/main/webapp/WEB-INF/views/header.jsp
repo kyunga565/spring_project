@@ -27,6 +27,24 @@
 	padding: 40px;
 	border: 1px dotted gray;
 }
+
+label {
+	width: 150px;
+	float: left;
+	font-weight: bold;
+}
+
+.btn {
+	border: 1px solid black;
+	background-color: white;
+	text-decoration: none;
+	margin:10px;
+}
+
+#btn {
+	margin: 0 auto;
+	width: 300px;
+}
 </style>
 </head>
 <body>

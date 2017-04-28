@@ -15,5 +15,7 @@
 		spring_user(userid,userpw,username,useremail,usertel)
 		values(#{userid},#{userpw},#{username},#{useremail},#{usertel})
 	</insert>
-
+	<select id="idCheck">
+		select count(*) from spring_user where userid=#{userid}
+	</select>
 </mapper>

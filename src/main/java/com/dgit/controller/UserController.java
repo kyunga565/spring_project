@@ -2,17 +2,14 @@ package com.dgit.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -23,7 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dgit.domain.LoginDTO;
 import com.dgit.domain.UserVO;
+import com.dgit.interceptor.LoginInterceptor;
 import com.dgit.service.UserService;
 import com.dgit.util.MediaUtils;
 import com.dgit.util.UploadFileUtils;
@@ -62,25 +60,27 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "login", method = RequestMethod.GET)
-	public void loginGET() {
+	public void loginGET(@ModelAttribute("dto") LoginDTO dto) {
 		logger.info("로그인 GET 실행");
 	}
 
 	@RequestMapping(value = "loginpost", method = RequestMethod.POST)
-	public void loginPOST(LoginDTO dto, Model model) throws Exception {
+	public void loginPOST(LoginDTO dto, Model model,HttpSession session) throws Exception {
+		
 		logger.info("로그인 POST 실행");
 		UserVO vo = service.login(dto);
 		if (vo == null)
 		model.addAttribute("error","ok");
-		System.out.println(model);
+		model.addAttribute("userVO", vo);
 		return;
 		
 	}
 
 	@RequestMapping(value = "picview", method = RequestMethod.GET)
-	public void picviewGET() {
-		logger.info("사진보기 GET 실행");
+	public void picviewGET() throws Exception {
+		logger.info("사진추가 GET 실행");
 	}
+	
 	@ResponseBody
 	@RequestMapping("displayFile")
 	public ResponseEntity<byte[]> displayFile(String filename) throws Exception {
@@ -104,35 +104,43 @@ public class UserController {
 		return entity;
 	}
 	
-	@ResponseBody 
-	@RequestMapping(value = "upload", method = RequestMethod.POST)
-	public ResponseEntity<ArrayList<String>> DragUploadResult(List<MultipartFile> files , String writer) throws IOException {
-		logger.info("writer : " + writer);
-		
-		ResponseEntity<ArrayList<String>> entity = null;
-		try{
-			ArrayList<String> fileNames = new ArrayList<>();
-			for(MultipartFile file : files){
-				logger.info(file.getOriginalFilename());
-				logger.info(file.getSize() + "");
-				logger.info(file.getContentType());
-				String thumFile = UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes());
-				fileNames.add(thumFile);
-				logger.info(thumFile+": thumfile"); 
-			}
-			entity = new ResponseEntity<>(fileNames,HttpStatus.OK);
-		}catch(Exception e){
-			e.printStackTrace();
-			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	@RequestMapping(value = "addAttach", method = RequestMethod.POST)
+	public String registerPost(List<MultipartFile> imagefiles, RedirectAttributes rttr,HttpServletRequest request)
+			throws Exception {
+		logger.info("사진보기 POST 실행");
+		HttpSession session = request.getSession();
+		UserVO vo = (UserVO) session.getAttribute(LoginInterceptor.LOGIN);
+	
+		// 파일업로드--------------------------------------------------------
+		ArrayList<String> filenames = new ArrayList<>();
+		for (MultipartFile file : imagefiles) {
+			logger.info("originalName : " + file.getOriginalFilename());
+			logger.info("size : " + file.getSize());
+			logger.info("contentType : " + file.getContentType());
+			String savedName = UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes());
+			filenames.add(savedName);
 		}
-		return entity;
+		String[] sFiles = filenames.toArray(new String[filenames.size()]);
+		vo.setFiles(sFiles);
+		// ----------------------------------------------------------------
+		service.addAttach(vo);
+		logger.info(vo.toString());
+		
+		rttr.addAttribute("userid", vo.getUserid());
+		return "redirect:/piclist";
+	}
+
+	@RequestMapping(value = "piclist", method = RequestMethod.GET)
+	public void piclistGET(Model model,String userid) throws Exception {
+		logger.info("사진리스트 GET 실행-"+userid);
+		model.addAttribute("userVO", service.getAttach(userid));
 	}
 	
+
 	@RequestMapping(value = "removeFile", method = RequestMethod.POST)
 	public ResponseEntity<String> DeleteFile(String filename, RedirectAttributes rttr) throws Exception {
-		logger.info("filename ------------------" + filename);
+		logger.info("filename1 ------------------" + filename);
 		ResponseEntity<String> entity = null;
-//엑스버튼 눌러서 수정화면에서 없어지고 zzz/upload에서도 없어짐
 		try {
 			String thumName1 = filename.substring(0, 12);
 			String thumName2 = filename.substring(14);
@@ -140,7 +148,7 @@ public class UserController {
 			new File(uploadPath + filename).delete();
 
 			rttr.addFlashAttribute("removeFile", "success");
-			logger.info("filename ------------------" + filename);
+			
 			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		} catch (Exception e) {
 			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
@@ -148,6 +156,7 @@ public class UserController {
 		}
 		return entity;
 	}
+	
 	
 	
 	

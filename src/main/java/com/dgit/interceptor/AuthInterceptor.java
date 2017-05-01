@@ -26,7 +26,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			// 로그인안됨
 			logger.info("로그인으로 가자!!!");
 			saveDest(request);
-			response.sendRedirect(request.getContextPath() + "/user/login");
+			response.sendRedirect(request.getContextPath() + "/login");
 			return false;
 		}
 		return true;

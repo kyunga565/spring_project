@@ -1,12 +1,24 @@
 package com.dgit.domain;
 
+import java.util.Arrays;
+
 public class UserVO {
 	private String userid;
 	private String userpw;
 	private String username;
 	private String useremail;
 	private String usertel;
+
 	
+	private String[] files;
+	
+	
+	public String[] getFiles() {
+		return files;
+	}
+	public void setFiles(String[] files) {
+		this.files = files;
+	}
 	public String getUserid() {
 		return userid;
 	}
@@ -40,6 +52,7 @@ public class UserVO {
 	@Override
 	public String toString() {
 		return "UserVO [userid=" + userid + ", userpw=" + userpw + ", username=" + username + ", useremail=" + useremail
-				+ ", usertel=" + usertel + "]";
+				+ ", usertel=" + usertel + ", files=" + Arrays.toString(files) + "]";
 	}
+	
 }

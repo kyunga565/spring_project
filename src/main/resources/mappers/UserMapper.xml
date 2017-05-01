@@ -18,4 +18,15 @@
 	<select id="idCheck">
 		select count(*) from spring_user where userid=#{userid}
 	</select>
+	<!-- 파일추가 -->
+	
+	<insert id="addAttach">
+		insert into spring_pic(userid,fullName) values(#{userid},#{fullName})
+	</insert>
+	<select id="getAttach" resultType="String">
+		select fullname from spring_pic where userid=#{userid}
+	</select>
+	<select id="read" resultType="UserVO">
+		select * from spring_pic where userid=#{userid}
+	</select>
 </mapper>

@@ -1,5 +1,9 @@
 package com.dgit.persistence;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,6 +32,25 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public UserVO login(LoginDTO dto) throws Exception {
 		return session.selectOne(namespace + ".login", dto);
+	}
+
+	@Override
+	public void addAttach(String userid, String fullname) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("userid", userid);
+		map.put("fullName", fullname);
+		System.out.println(fullname + "--------------------------------");
+		session.insert(namespace + ".addAttach", map);
+	}
+
+	@Override
+	public UserVO read(String userid) throws Exception {
+		return session.selectOne(namespace + ".read", userid);
+	}
+
+	@Override
+	public List<String> getAttach(String userid) throws Exception {
+		return session.selectList(namespace + ".getAttach", userid);
 	}
 
 }

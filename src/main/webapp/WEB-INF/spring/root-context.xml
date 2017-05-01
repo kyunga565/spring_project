@@ -42,11 +42,11 @@
 	<context:component-scan base-package="com.dgit.aop"/>
 	<aop:config></aop:config>
 	
-<!-- 	
+ 	
 	<bean id="uploadPath" class="java.lang.String">
 		<constructor-arg value="C:/zzz/upload"></constructor-arg>
 	</bean>
--->
+
 	<context:component-scan base-package="com.dgit.persistence"/>
 	
 	<context:component-scan base-package="com.dgit.service"/>

@@ -54,4 +54,10 @@ public class UserServiceImpl implements UserService {
 		return dao.getAttach(userid);
 	}
 
+	@Override
+	public void removeFile(String fullname) throws Exception {
+		dao.deleteFile(fullname);
+		
+	}
+
 }

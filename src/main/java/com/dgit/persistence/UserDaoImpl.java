@@ -53,4 +53,10 @@ public class UserDaoImpl implements UserDao {
 		return session.selectList(namespace + ".getAttach", userid);
 	}
 
+	@Override
+	public void deleteFile(String fullname) throws Exception {
+		session.delete(namespace + ".deleteFile", fullname);
+		
+	}
+
 }

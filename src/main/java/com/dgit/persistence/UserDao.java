@@ -18,4 +18,5 @@ public interface UserDao {
 	public void idCheck(UserVO vo) throws Exception;
 
 	public List<String> getAttach(String userid) throws Exception;
+	public void deleteFile(String fullname) throws Exception;
 }

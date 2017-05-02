@@ -29,4 +29,7 @@
 	<select id="read" resultType="UserVO">
 		select * from spring_pic where userid=#{userid}
 	</select>
+	<delete id="deleteFile">
+		delete from spring_pic where fullname=#{fullname}
+	</delete>
 </mapper>

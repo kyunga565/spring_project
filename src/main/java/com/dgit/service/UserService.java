@@ -13,4 +13,5 @@ public interface UserService {
 	
 	public void addAttach(UserVO vo) throws Exception;
 	public List<String> getAttach(String userid) throws Exception;
+	public void removeFile (String fullname) throws Exception;
 }

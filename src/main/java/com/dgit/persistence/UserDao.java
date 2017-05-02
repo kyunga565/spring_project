@@ -15,7 +15,7 @@ public interface UserDao {
 	// 파일추가
 	public void addAttach(String userid, String fullname) throws Exception;
 
-	public void idCheck(UserVO vo) throws Exception;
+	public List<UserVO> idCheck() throws Exception;
 
 	public List<String> getAttach(String userid) throws Exception;
 	public void deleteFile(String fullname) throws Exception;

@@ -15,21 +15,30 @@
 		spring_user(userid,userpw,username,useremail,usertel)
 		values(#{userid},#{userpw},#{username},#{useremail},#{usertel})
 	</insert>
-	<select id="idCheck">
-		select count(*) from spring_user where userid=#{userid}
-	</select>
+<!-- 	<select id="idCheck">
+		select count(*) from spring_user where
+		userid=#{userid}
+	</select> -->
 	<!-- 파일추가 -->
-	
 	<insert id="addAttach">
-		insert into spring_pic(userid,fullName) values(#{userid},#{fullName})
+		insert into spring_pic(userid,fullName)
+		values(#{userid},#{fullName})
 	</insert>
 	<select id="getAttach" resultType="String">
-		select fullname from spring_pic where userid=#{userid}
+		select fullname from
+		spring_pic where userid=#{userid}
 	</select>
 	<select id="read" resultType="UserVO">
-		select * from spring_pic where userid=#{userid}
+		select * from spring_pic where
+		userid=#{userid}
 	</select>
 	<delete id="deleteFile">
 		delete from spring_pic where fullname=#{fullname}
 	</delete>
+
+	<select id="idCheck" resultType="UserVO">
+		select userid from spring_user
+	</select>
+
+
 </mapper>

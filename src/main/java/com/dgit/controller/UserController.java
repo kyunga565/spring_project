@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -73,7 +74,6 @@ public class UserController {
 			model.addAttribute("error", "ok");
 		model.addAttribute("userVO", vo);
 		return;
-
 	}
 
 	@RequestMapping(value = "picview", method = RequestMethod.GET)
@@ -124,6 +124,7 @@ public class UserController {
 		String[] sFiles = filenames.toArray(new String[filenames.size()]);
 		vo.setFiles(sFiles);
 		// ----------------------------------------------------------------
+	
 		service.addAttach(vo);
 		logger.info(vo.toString());
 
@@ -146,7 +147,7 @@ public class UserController {
 			String thumName2 = filename.substring(14);
 			new File(uploadPath + thumName1 + thumName2).delete();
 			new File(uploadPath + filename).delete();
-
+			
 			rttr.addFlashAttribute("removeFile", "success");
 			
 			service.removeFile(filename);
@@ -158,22 +159,28 @@ public class UserController {
 		return entity;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@RequestMapping(value = "idCheck", method = RequestMethod.GET)
-	public void checkId(UserVO vo, Model model, HttpServletRequest req) throws Exception {
-		String id2 = req.getParameter("id");
-		logger.info(id2 + "------------------");
-		logger.info("------------------");
+	@ResponseBody
+	@RequestMapping(value = "idCheck/{userid}", method = RequestMethod.GET)
+	public ResponseEntity<String> checkId(@PathVariable("userid") String userid) throws Exception {
+		logger.info("왓다감");
+		ResponseEntity<String> result = null;
+		try {
+			List<UserVO> vo = service.idCheck();
+			boolean idoverlap = false;
+			for (int i = 0; i < vo.size(); i++) {
+				if (userid.equals(vo.get(i).getUserid())) {
+					idoverlap = true;
+					break;
+				}
+			}
+			if (idoverlap == true) {
+				result = new ResponseEntity<String>("fail", HttpStatus.OK);
+			} else {
+				result = new ResponseEntity<>("success", HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

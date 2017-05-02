@@ -7,7 +7,7 @@ import com.dgit.domain.UserVO;
 
 public interface UserService {
 	public void join(UserVO vo) throws Exception;
-	public void idCheck(UserVO vo) throws Exception;
+	public List<UserVO> idCheck() throws Exception;
 	public UserVO login(LoginDTO dto) throws Exception;
 	public UserVO read(String userid) throws Exception;
 	

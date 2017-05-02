@@ -25,8 +25,8 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void idCheck(UserVO vo) throws Exception {
-		session.selectOne(namespace + ".idCheck", vo);
+	public List<UserVO> idCheck() throws Exception {
+		return session.selectList(namespace + ".idCheck");
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public void deleteFile(String fullname) throws Exception {
 		session.delete(namespace + ".deleteFile", fullname);
-		
+
 	}
 
 }

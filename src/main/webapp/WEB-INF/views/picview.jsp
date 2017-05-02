@@ -15,6 +15,7 @@ input[type='submit'],input[type='reset']{border:1px solid black; background-colo
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <style type="text/css">
+#addpic{font-size: 12px;color:green; text-decoration: none; margin-left: 400px; padding:10px;}
 </style>
 </head>
 <body>

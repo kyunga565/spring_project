@@ -24,8 +24,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void idCheck(UserVO vo) throws Exception {
-		dao.idCheck(vo);
+	public List<UserVO> idCheck() throws Exception {
+		return dao.idCheck();
 	}
 
 	@Override

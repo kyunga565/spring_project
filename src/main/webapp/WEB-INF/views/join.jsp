@@ -55,9 +55,11 @@ $("#checkID").click(function(e){
 			if(data == "success"){
 				result = true 
 				$(".checktrue").css("visibility","visible")
+				$(".checkfalse").css("visibility","hidden")
 			}else{
 				result = false
 				$(".checkfalse").css("visibility","visible")
+				$(".checktrue").css("visibility","hidden")
 			}
 		}
 	})

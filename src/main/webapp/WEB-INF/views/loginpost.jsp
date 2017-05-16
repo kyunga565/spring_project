@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+${userVO }
 	<script type="text/javascript">
 	var e = '${error }'
 	if(e == "ok"){

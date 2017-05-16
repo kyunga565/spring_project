@@ -45,6 +45,13 @@ label {
 	margin: 0 auto;
 	width: 300px;
 }
+#body2 {
+	width: 50%;
+	margin: 0 auto;
+	padding: 40px;
+	border: 1px dotted gray;
+	height:400px;
+}
 </style>
 </head>
 <body>

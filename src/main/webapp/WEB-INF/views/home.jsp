@@ -11,7 +11,7 @@
 
 <P>  The time on the server is ${serverTime}. </P>
 <script type="text/javascript">
-self.location = "${pageContext.request.contextPath}/picview";
+ self.location = "${pageContext.request.contextPath}/picview" 
 </script>
 </body>
 </html>

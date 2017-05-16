@@ -77,7 +77,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "picview", method = RequestMethod.GET)
-	public void picviewGET() throws Exception {
+	public void picviewGET(RedirectAttributes rttr, HttpServletRequest request) throws Exception {
 		logger.info("사진추가 GET 실행");
 	}
 
@@ -122,6 +122,7 @@ public class UserController {
 			filenames.add(savedName);
 		}
 		String[] sFiles = filenames.toArray(new String[filenames.size()]);
+		System.out.println(sFiles);
 		vo.setFiles(sFiles);
 		// ----------------------------------------------------------------
 	
@@ -133,9 +134,10 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "piclist", method = RequestMethod.GET)
-	public void piclistGET(Model model, String userid) throws Exception {
+	public void piclistGET(Model model, String userid, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
 		logger.info("사진리스트 GET 실행-" + userid);
 		model.addAttribute("userVO", service.getAttach(userid));
+
 	}
 
 	@RequestMapping(value = "removeFile", method = RequestMethod.POST)
